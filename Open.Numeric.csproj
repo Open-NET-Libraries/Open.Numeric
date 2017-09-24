@@ -1,7 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <Authors>electricessence</Authors>
+    <Company />
+    <Product />
+    <Description>Extensions for simplifying working with numbers.
+Includes precision extensions for floating point numbers.
+
+Part of the "Open" set of libraries.</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://github.com/electricessence/Open/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>

@@ -10,7 +10,12 @@ Includes precision extensions for floating point numbers.
 
 Part of the "Open" set of libraries.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageLicenseUrl>https://github.com/electricessence/Open/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/electricessence/Open.Numeric/blob/master/LISCENSE.md</PackageLicenseUrl>
+    <Copyright>https://github.com/electricessence/Open.Numeric/blob/master/LISCENSE.md</Copyright>
+    <RepositoryUrl>https://github.com/electricessence/Open.Numeric/</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/electricessence/Open.Numeric/</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
   </PropertyGroup>
 
 </Project>

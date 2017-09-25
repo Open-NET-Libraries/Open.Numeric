@@ -7,9 +7,9 @@ using System;
 using System.Globalization;
 
 
-namespace Open.Formatting
+namespace Open.Numeric
 {
-	public static class Numeric
+	public static class Extensions
 	{
 		#region Numeric shortcuts.
 		public static bool IsNaN(this double value)
@@ -237,17 +237,22 @@ namespace Open.Formatting
 			return value.HasValue ? value.Value.ToDouble(precision) : double.NaN;
 		}
 
-		/// <summary>
-		/// Accurate way to convert possible float to double by converting to string first.  Avoids tolerance issues.
-		/// Uses default double convert if not a float.
-		/// </summary>
-		public static double ToDouble(object value)
-		{
-			if (value == null)
-				return double.NaN;
-
-			return value is float ? ((float)value).ToDouble() : Convert.ToDouble(value);
-		}
 		#endregion
 	}
+
+    public static class NumericConvert
+    {
+
+        /// <summary>
+        /// Accurate way to convert possible float to double by converting to string first.  Avoids tolerance issues.
+        /// Uses default double convert if not a float.
+        /// </summary>
+        public static double ToDouble(object value)
+        {
+            if (value == null)
+                return double.NaN;
+
+            return value is float ? ((float)value).ToDouble() : Convert.ToDouble(value);
+        }
+    }
 }

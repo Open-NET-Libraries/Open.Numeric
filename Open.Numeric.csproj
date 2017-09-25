@@ -18,4 +18,8 @@ Part of the "Open" set of libraries.</Description>
     <PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
 </Project>

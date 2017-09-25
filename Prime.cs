@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Open.Numeric.Primes
 {
@@ -43,6 +44,24 @@ namespace Open.Numeric.Primes
             return true;
         }
 
+        static bool IsPrimeInternal(BigInteger value)
+        {
+            BigInteger divisor = 6;
+            while (divisor * divisor - 2 * divisor + 1 <= value)
+            {
+
+                if (value % (divisor - 1) == 0)
+                    return false;
+
+                if (value % (divisor + 1) == 0)
+                    return false;
+
+                divisor += 6;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Validates if a number is prime.
         /// </summary>
@@ -74,18 +93,51 @@ namespace Open.Numeric.Primes
         /// </summary>
         /// <param name="value">Value to verify.</param>
         /// <returns>True if the provided value is a prime number</returns>
+        public static bool IsPrime(BigInteger value)
+        {
+            value = BigInteger.Abs(value);
+            if (value == 0 || value == 1)
+                return false;
+            if (value == 2 || value == 3)
+                return true;
+
+            return value % 2 != 0
+                && value % 3 != 0
+                && IsPrimeInternal(value);
+        }
+
+        /// <summary>
+        /// Validates if a number is prime.
+        /// </summary>
+        /// <param name="value">Value to verify.</param>
+        /// <returns>True if the provided value is a prime number</returns>
         public static bool IsPrime(long value)
         {
             return IsPrime((ulong)Math.Abs(value));
         }
 
+        /// <summary>
+        /// Validates if a number is prime.
+        /// </summary>
+        /// <param name="value">Value to verify.</param>
+        /// <returns>True if the provided value is a prime number</returns>
         public static bool IsPrime(double value)
         {
-            return (Math.Floor(value) == value)
-                ? IsPrime((long)value)
-                : false;
+            if(Math.Floor(value) != value)
+                return false;
+
+            value = Math.Abs(value);
+            if(value<=ulong.MaxValue)
+                return IsPrime((ulong)value);
+
+            return IsPrime((BigInteger)value);
         }
 
+        /// <summary>
+        /// Iterates the prime multiples of the provided value.
+        /// </summary>
+        /// <param name="value">Value to verify.</param>
+        /// <returns>An enumerable that contains the multiples of the provided value.</returns>
         public static IEnumerable<ulong> MultiplesOf(ulong value)
         {
             ulong last = 1;
@@ -112,37 +164,75 @@ namespace Open.Numeric.Primes
 
         internal static IEnumerable<ulong> ValidPrimeTests(ulong staringAt = 2)
         {
-            if (staringAt > 2)
+            var n = staringAt;
+            if (n > 2)
             {
-                if (staringAt % 2 == 0)
-                    staringAt++;
+                if (n % 2 == 0)
+                    n++;
             }
+            else
             {
                 yield return 2;
-                staringAt = 3;
+                n = 3;
             }
 
-            for (ulong n = staringAt; n < ulong.MaxValue - 1; n += 2)
+            for (; n < ulong.MaxValue - 1; n += 2)
                 yield return n;
         }
 
-        internal static IEnumerable<long> ValidPrimeTests(long staringAt = 2)
+        internal static IEnumerable<long> ValidPrimeTests(long staringAt)
         {
             var sign = staringAt < 0 ? -1 : 1;
-            staringAt = Math.Abs(staringAt);
+            var n = Math.Abs(staringAt);
 
-            if (staringAt > 2)
+            if (n > 2)
             {
-                if (staringAt % 2 == 0)
-                    staringAt++;
+                if (n % 2 == 0)
+                    n++;
             }
+            else
             {
                 yield return sign * 2;
-                staringAt = 3;
+                n = 3;
             }
 
-            for (long n = staringAt; n < long.MaxValue - 1; n += 2)
+            for (; n < long.MaxValue - 1; n += 2)
                 yield return sign * n;
+        }
+
+        internal static IEnumerable<BigInteger> ValidPrimeTests(BigInteger staringAt)
+        {
+            var sign = staringAt.Sign;
+            if(sign==0) sign = 1;
+            var n = BigInteger.Abs(staringAt);
+
+            if (n > 2)
+            {
+                if (n % 2 == 0)
+                    n++;
+            }
+            else
+            {
+                yield return sign * 2;
+                n = 3;
+            }
+
+            while(true)
+            {
+                yield return sign * n;
+                n += 2;
+            }
+        }
+
+        /// <summary>
+        /// Returns an enumerable that will iterate every prime starting at the starting value.
+        /// </summary>
+        /// <param name="staringAt">Allows for skipping ahead any integer before checking for inclusive and subsequent primes.</param>
+        /// <returns></returns>
+        public static IEnumerable<BigInteger> Numbers(BigInteger staringAt)
+        {
+            return ValidPrimeTests(staringAt)
+                .Where(v => Number.IsPrime(v));
         }
 
         /// <summary>
@@ -185,6 +275,23 @@ namespace Open.Numeric.Primes
         }
 
         /// <summary>
+        /// Returns a parallel enumerable that will iterate every prime starting at the starting value.
+        /// </summary>
+        /// <param name="staringAt">Allows for skipping ahead any integer before checking for inclusive and subsequent primes.</param>
+        /// <param name="degreeOfParallelism">Operates in parallel unless 1 is specified.</param>
+        /// <returns></returns>
+        public static ParallelQuery<BigInteger> NumbersInParallel(BigInteger staringAt, ushort? degreeOfParallelism = null)
+        {
+            var tests = ValidPrimeTests(staringAt)
+                .AsParallel().AsOrdered();
+
+            if (degreeOfParallelism.HasValue)
+                tests = tests.WithDegreeOfParallelism(degreeOfParallelism.Value);
+
+            return tests.Where(v => Number.IsPrime(v));
+        }
+
+        /// <summary>
         /// Finds the next prime number after the number given.
         /// </summary>
         /// <param name="after">The excluded lower boundary to start with.</param>
@@ -193,7 +300,6 @@ namespace Open.Numeric.Primes
         {
             return Numbers(after + 1).First();
         }
-
 
         /// <summary>
         /// Finds the next prime number after the number given.
@@ -236,6 +342,11 @@ namespace Open.Numeric.Primes
             {
                 return Number.IsPrime(value);
             }
+            public static bool IsPrime(this BigInteger value)
+            {
+                return Number.IsPrime(value);
+            }
+
             public static ulong NextPrime(this ulong value)
             {
                 return Prime.Next(value);

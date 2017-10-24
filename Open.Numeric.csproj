@@ -16,7 +16,7 @@ Part of the "Open" set of libraries.</Description>
     <PackageProjectUrl>https://github.com/electricessence/Open.Numeric/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -19,76 +19,169 @@ namespace Open.Numeric
 				return R.Value;
 			}
 		}
-		public static T RandomSelectOne<T>(this IList<T> source)
+
+
+		public static bool TryRandomPluck<T>(this LinkedList<T> source, out T value)
 		{
-			return source[R.Value.Next(source.Count)];
-		}
-		public static T RandomPluck<T>(this IList<T> source)
-		{
-			var e = source[R.Value.Next(source.Count)];
-			source.Remove(e);
-			return e;
+			if (source.Count == 0)
+			{
+				value = default(T);
+				return false;
+			}
+
+			var r = R.Value.Next(source.Count);
+			var node = source.First;
+			for (var i = 0; i <= r; i++)
+				node = node.Next;
+			value = node.Value;
+			source.Remove(node);
+			return true;
 		}
 
-		public static T RandomSelectOne<T>(this T[] source)
+		public static T RandomPluck<T>(this LinkedList<T> source)
 		{
-			return source[R.Value.Next(source.Length)];
+			if (source.TryRandomPluck(out T value))
+				return value;
+
+			throw new InvalidOperationException("Source collection is empty.");
 		}
-		public static T RandomSelectOne<T>(this ICollection<T> source)
+
+		public static bool TryRandomPluck<T>(this IList<T> source, out T value)
 		{
-			return source.Skip(R.Value.Next(source.Count)).First();
+			if (source.Count == 0)
+			{
+				value = default(T);
+				return false;
+			}
+
+			var r = R.Value.Next(source.Count);
+			value = source[r];
+			source.RemoveAt(r);
+			return true;
 		}
-		public static T RandomSelectOne<T>(this IEnumerable<T> source)
+
+		public static T RandomPluck<T>(this IList<T> source)
 		{
-			return source.Skip(R.Value.Next(source.Count())).First();
+			if (source.TryRandomPluck(out T value))
+				return value;
+
+			throw new InvalidOperationException("Source collection is empty.");
+		}
+
+		public static bool TryRandomSelectOne<T>(
+			this IReadOnlyList<T> source,
+			out T value,
+			ISet<T> excluding = null)
+		{
+			var count = source.Count;
+			if (count == 0)
+			{
+				value = default(T);
+				return false;
+			}
+
+			if (excluding == null || excluding.Count == 0)
+			{
+				value = source[R.Value.Next(count)];
+				return true;
+			}
+
+			return source
+				.Where(o => !excluding.Contains(o))
+				.ToArray()
+				.TryRandomSelectOne(out value);
+		}
+
+		public static T RandomSelectOne<T>(
+			this IReadOnlyList<T> source,
+			ISet<T> excluding = null)
+		{
+			if (source.Count == 0)
+				throw new InvalidOperationException("Source collection is empty.");
+
+			if (source.TryRandomSelectOne(out T value, excluding))
+				return value;
+
+			throw new InvalidOperationException("Exclusion set invalidates the source.  No possible value can be selected.");
+		}
+
+		public static bool TryRandomSelectOneExcept<T>(
+			this IReadOnlyList<T> source,
+			T excluding,
+			out T value)
+		{
+			var count = source.Count;
+			if (count == 0)
+			{
+				value = default(T);
+				return false;
+			}
+
+			return source
+				.Where(o => !excluding.Equals(o))
+				.ToArray()
+				.TryRandomSelectOne(out value);
+		}
+
+		public static T RandomSelectOneExcept<T>(
+			this IReadOnlyList<T> source,
+			T excluding)
+		{
+			if (source.Count == 0)
+				throw new InvalidOperationException("Source collection is empty.");
+
+			if (source.TryRandomSelectOneExcept(excluding, out T value))
+				return value;
+
+			throw new InvalidOperationException("Exclusion set invalidates the source.  No possible value can be selected.");
+		}
+
+		public static ushort NextRandomIntegerExcluding(
+			ushort range,
+			ISet<ushort> excludeSet)
+		{
+			if (range == 0)
+				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
+
+			if (excludeSet == null || excludeSet.Count == 0)
+				return (ushort)R.Value.Next(range);
+
+			if (excludeSet.Count == 1)
+				return (ushort)NextRandomIntegerExcluding(range, excludeSet.Single());
+
+			return UEnumerable
+				.Range(range)
+				.Where(i => !excludeSet.Contains(i))
+				.ToArray()
+				.RandomSelectOne();
 		}
 
 		public static int NextRandomIntegerExcluding(
 			int range,
-			HashSet<int> excludeSet)
+			ISet<int> excludeSet)
 		{
-			if (range < 0)
+			if (range <= 0)
 				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
-			var r = new List<int>();
 
-			for (var i = 0; i < range; ++i)
-			{
-				if (!excludeSet.Contains(i)) r.Add(i);
-			}
+			if (excludeSet == null || excludeSet.Count == 0)
+				return R.Value.Next(range);
 
-			return r.RandomSelectOne();
+			if (excludeSet.Count == 1)
+				return NextRandomIntegerExcluding(range, excludeSet.Single());
+
+			return Enumerable
+				.Range(0, range)
+				.Where(i => !excludeSet.Contains(i))
+				.ToArray()
+				.RandomSelectOne();
 		}
 
-		public static uint NextRandomIntegerExcluding(
-			uint range,
-			HashSet<uint> excludeSet)
+		public static ushort NextRandomIntegerExcluding(
+			ushort range,
+			IEnumerable<ushort> excluding)
 		{
-			var r = new List<uint>();
-
-			for (uint i = 0; i < range; ++i)
-			{
-				if (!excludeSet.Contains(i)) r.Add(i);
-			}
-
-			return r.RandomSelectOne();
+			return NextRandomIntegerExcluding(range, new HashSet<ushort>(excluding));
 		}
-
-		public static uint NextRandomIntegerExcluding(
-			int range,
-			HashSet<uint> excludeSet)
-		{
-			if (range < 0)
-				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
-			var r = new List<uint>();
-
-			for (uint i = 0; i < range; ++i)
-			{
-				if (!excludeSet.Contains(i)) r.Add(i);
-			}
-
-			return r.RandomSelectOne();
-		}
-
 
 		public static int NextRandomIntegerExcluding(
 			int range,
@@ -101,50 +194,37 @@ namespace Open.Numeric
 			int range,
 			int excluding)
 		{
-			if (range < 0)
+			if (range <= 0)
 				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
-			var r = new List<int>();
 
-			for (var i = 0; i < range; ++i)
+			if (excluding == 0)
 			{
-				if (excluding != i) r.Add(i);
+				if (range == 1)
+					throw new ArgumentException("No value is available with a range of 1 and exclusion of 0.", "range");
+				return R.Value.Next(range - 1) + 1;
 			}
 
-			return r.RandomSelectOne();
+			if (excluding >= range || excluding < 0)
+				return R.Value.Next(range);
+
+			if (excluding == range - 1)
+				return R.Value.Next(range - 1);
+
+			return Enumerable
+				.Range(0, range)
+				.Where(i => i != excluding)
+				.ToArray()
+				.RandomSelectOne();
 		}
 
-		public static uint NextRandomIntegerExcluding(
+		public static int NextRandomIntegerExcluding(
 			int range,
 			uint excluding)
 		{
-			if (range < 0)
-				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
-			var r = new List<uint>();
-
-			for (uint i = 0; i < range; ++i)
-			{
-				if (excluding != i) r.Add(i);
-			}
-
-			return r.RandomSelectOne();
-		}
-
-		public static uint NextRandomIntegerExcluding(
-			uint range,
-			uint excluding)
-		{
-			var r = new List<uint>();
-
-			for (uint i = 0; i < range; ++i)
-			{
-				if (excluding != i) r.Add(i);
-			}
-
-			return r.RandomSelectOne();
+			return NextRandomIntegerExcluding(range,
+				excluding > int.MaxValue ? -1 : (int)excluding);
 		}
 
 	}
-
-
 
 }

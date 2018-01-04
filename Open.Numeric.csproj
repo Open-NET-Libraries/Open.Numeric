@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>electricessence</Authors>
     <Company />
     <Product />
@@ -16,11 +16,20 @@ Part of the "Open" set of libraries.</Description>
     <PackageProjectUrl>https://github.com/electricessence/Open.Numeric/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
-    <Version>1.0.5</Version>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>True</Optimize>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove=".git" />
+    <None Remove=".gitignore" />
+    <None Remove="LISCENSE.md" />
+    <None Remove="README.md" />
+  </ItemGroup>
 
 </Project>

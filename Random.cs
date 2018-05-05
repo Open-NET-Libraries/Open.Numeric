@@ -141,7 +141,7 @@ namespace Open.Numeric
 			ISet<ushort> excludeSet)
 		{
 			if (range == 0)
-				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
+				throw new ArgumentOutOfRangeException(nameof(range), range, "Must be a number greater than zero.");
 
 			if (excludeSet == null || excludeSet.Count == 0)
 				return (ushort)R.Value.Next(range);
@@ -161,7 +161,7 @@ namespace Open.Numeric
 			ISet<int> excludeSet)
 		{
 			if (range <= 0)
-				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
+				throw new ArgumentOutOfRangeException(nameof(range), range, "Must be a number greater than zero.");
 
 			if (excludeSet == null || excludeSet.Count == 0)
 				return R.Value.Next(range);
@@ -195,7 +195,7 @@ namespace Open.Numeric
 			int excluding)
 		{
 			if (range <= 0)
-				throw new ArgumentOutOfRangeException("range", range, "Must be a number greater than zero.");
+				throw new ArgumentOutOfRangeException(nameof(range), range, "Must be a number greater than zero.");
 
 			if (excluding == 0)
 			{

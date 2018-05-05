@@ -3,13 +3,13 @@
  * Licensing: MIT https://github.com/electricessence/Open/blob/dotnet-core/LICENSE.md
  */
 
-using System;
 using Open.Numeric.Precision;
+using System;
 
 
 namespace Open.Numeric
 {
-    public static class Extensions
+	public static class Extensions
 	{
 		#region Numeric shortcuts.
 		public static bool IsNaN(this double value)
@@ -32,19 +32,19 @@ namespace Open.Numeric
 
 	}
 
-    public static class NumericConvert
-    {
+	public static class NumericConvert
+	{
 
-        /// <summary>
-        /// Accurate way to convert possible float to double by converting to string first.  Avoids tolerance issues.
-        /// Uses default double convert if not a float.
-        /// </summary>
-        public static double ToDouble(object value)
-        {
-            if (value == null)
-                return double.NaN;
+		/// <summary>
+		/// Accurate way to convert possible float to double by converting to string first.  Avoids tolerance issues.
+		/// Uses default double convert if not a float.
+		/// </summary>
+		public static double ToDouble(object value)
+		{
+			if (value == null)
+				return double.NaN;
 
-            return value is float ? ((float)value).ToDouble() : Convert.ToDouble(value);
-        }
-    }
+			return value is float ? ((float)value).ToDouble() : Convert.ToDouble(value);
+		}
+	}
 }

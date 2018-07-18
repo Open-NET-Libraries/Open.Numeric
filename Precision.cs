@@ -66,7 +66,7 @@ namespace Open.Numeric.Precision
 			if (source.IsNaN())
 				return 0;
 
-			string valueString = source.ToString();
+			var valueString = source.ToString();
 			var index = valueString.IndexOf('.');
 			return index == -1 ? 0 : valueString.Length - index - 1;
 		}
@@ -179,9 +179,9 @@ namespace Open.Numeric.Precision
 				throw new ArgumentOutOfRangeException(nameof(precision), precision, "Must be bewteen 0 and 15.");
 			Contract.EndContractBlock();
 
-			double result = value.ReturnZeroIfFinite();
+			var result = value.ReturnZeroIfFinite();
 			// ReSharper disable RedundantCast
-			return result.IsZero() ? Math.Round((double)value, precision) : result;
+			return result.IsZero() ? Math.Round(value, precision) : result;
 			// ReSharper restore RedundantCast
 		}
 
@@ -190,7 +190,7 @@ namespace Open.Numeric.Precision
 		/// </summary>
 		public static double ToDouble(this float value)
 		{
-			double result = value.ReturnZeroIfFinite();
+			var result = value.ReturnZeroIfFinite();
 			return result.IsZero() ? double.Parse(value.ToString(CultureInfo.InvariantCulture)) : result;
 		}
 
@@ -262,7 +262,7 @@ namespace Open.Numeric.Precision
 			var v = (long)(source * x);
 			var a = (long)(value * x);
 			var result = v + a;
-			return (double)result / x;
+			return result / x;
 		}
 
 	}

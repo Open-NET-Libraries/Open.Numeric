@@ -25,7 +25,7 @@ namespace Open.Numeric
 		public static bool IsDefault(this double value)
 		{
 			// ReSharper disable CompareOfFloatsByEqualityOperator
-			return value.Equals(default(double));
+			return value.Equals(default);
 			// ReSharper restore CompareOfFloatsByEqualityOperator
 		}
 		#endregion

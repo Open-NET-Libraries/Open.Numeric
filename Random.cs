@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * @author electricessence / https://github.com/electricessence/
  * Licensing: MIT https://github.com/electricessence/Genetic-Algorithm-Platform/blob/master/LICENSE.md
  */
@@ -11,7 +11,7 @@ namespace Open.Numeric
 {
 	public static class RandomUtilities
 	{
-		static Lazy<Random> R = new Lazy<Random>(() => new Random());
+		static readonly Lazy<Random> R = new Lazy<Random>(() => new Random());
 		public static Random Random
 		{
 			get
@@ -20,12 +20,11 @@ namespace Open.Numeric
 			}
 		}
 
-
 		public static bool TryRandomPluck<T>(this LinkedList<T> source, out T value)
 		{
 			if (source.Count == 0)
 			{
-				value = default(T);
+				value = default;
 				return false;
 			}
 
@@ -40,7 +39,7 @@ namespace Open.Numeric
 
 		public static T RandomPluck<T>(this LinkedList<T> source)
 		{
-			if (source.TryRandomPluck(out T value))
+			if (source.TryRandomPluck(out var value))
 				return value;
 
 			throw new InvalidOperationException("Source collection is empty.");
@@ -50,7 +49,7 @@ namespace Open.Numeric
 		{
 			if (source.Count == 0)
 			{
-				value = default(T);
+				value = default;
 				return false;
 			}
 
@@ -62,7 +61,7 @@ namespace Open.Numeric
 
 		public static T RandomPluck<T>(this IList<T> source)
 		{
-			if (source.TryRandomPluck(out T value))
+			if (source.TryRandomPluck(out var value))
 				return value;
 
 			throw new InvalidOperationException("Source collection is empty.");
@@ -76,20 +75,19 @@ namespace Open.Numeric
 			var count = source.Count;
 			if (count == 0)
 			{
-				value = default(T);
+				value = default;
 				return false;
 			}
 
-			if (excluding == null || excluding.Count == 0)
-			{
-				value = source[R.Value.Next(count)];
-				return true;
-			}
+			if (excluding != null && excluding.Count != 0)
+				return source
+					.Where(o => !excluding.Contains(o))
+					.ToArray()
+					.TryRandomSelectOne(out value);
 
-			return source
-				.Where(o => !excluding.Contains(o))
-				.ToArray()
-				.TryRandomSelectOne(out value);
+			value = source[R.Value.Next(count)];
+			return true;
+
 		}
 
 		public static T RandomSelectOne<T>(
@@ -106,14 +104,14 @@ namespace Open.Numeric
 		}
 
 		public static bool TryRandomSelectOneExcept<T>(
-			this IReadOnlyList<T> source,
+			this IReadOnlyCollection<T> source,
 			T excluding,
 			out T value)
 		{
 			var count = source.Count;
 			if (count == 0)
 			{
-				value = default(T);
+				value = default;
 				return false;
 			}
 
@@ -124,7 +122,7 @@ namespace Open.Numeric
 		}
 
 		public static T RandomSelectOneExcept<T>(
-			this IReadOnlyList<T> source,
+			this IReadOnlyCollection<T> source,
 			T excluding)
 		{
 			if (source.Count == 0)

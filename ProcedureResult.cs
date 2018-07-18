@@ -4,18 +4,18 @@ using System;
 
 namespace Open.Numeric
 {
-	public struct ProcedureResult : IComparable<ProcedureResult>
+	public struct ProcedureResult : IComparable<ProcedureResult>, IProcedureResult<double>
 	{
-		public readonly int Count;
-		public readonly double Sum;
-		public readonly double Average;
+		public int Count { get; }
+		public double Sum { get; }
+		public double Average { get; }
+
 		public ProcedureResult(double sum, int count)
 		{
 			Count = count;
 			Sum = sum;
 			Average = count == 0 ? double.NaN : sum / count;
 		}
-
 
 		public ProcedureResult Add(double value, int count = 1)
 		{

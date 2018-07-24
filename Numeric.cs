@@ -44,7 +44,9 @@ namespace Open.Numeric
 			if (value == null)
 				return double.NaN;
 
-			return value is float ? ((float)value).ToDouble() : Convert.ToDouble(value);
+			return value is float f
+				? f.ToDouble()
+				: Convert.ToDouble(value);
 		}
 	}
 }

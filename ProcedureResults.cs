@@ -18,7 +18,7 @@ namespace Open.Numeric
 
 		static double[] SumValues(ReadOnlySpan<double> a, ReadOnlySpan<double> b)
 		{
-			if (a.Length != a.Length)
+			if (a.Length != b.Length)
 				throw new ArgumentException("Length mismatch.");
 
 			var len = a.Length;

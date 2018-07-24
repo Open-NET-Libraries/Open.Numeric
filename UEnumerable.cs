@@ -15,9 +15,7 @@ namespace Open.Numeric
 		}
 
 		public static IEnumerable<ushort> Range(ushort count)
-		{
-			return Range(0, count);
-		}
+			=> Range(0, count);
 
 
 		public static IEnumerable<uint> Range(uint start, uint count)
@@ -31,8 +29,6 @@ namespace Open.Numeric
 		}
 
 		public static IEnumerable<uint> Range(uint count)
-		{
-			return Range(0, count);
-		}
+			=> Range(0, count);
 	}
 }

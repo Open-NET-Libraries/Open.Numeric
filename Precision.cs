@@ -66,7 +66,7 @@ namespace Open.Numeric.Precision
 			if (source.IsNaN())
 				return 0;
 
-			var valueString = source.ToString();
+			var valueString = source.ToString(CultureInfo.InvariantCulture); // To
 			var index = valueString.IndexOf('.');
 			return index == -1 ? 0 : valueString.Length - index - 1;
 		}
@@ -118,7 +118,8 @@ namespace Open.Numeric.Precision
 		/// </summary>
 		public static bool IsPreciseEqual(this double a, double b, bool stringValidate = false)
 		{
-			return IsNearEqual(a, b, double.Epsilon) || (stringValidate && !double.IsNaN(a) && !double.IsNaN(b) && a.ToString() == b.ToString());
+			return IsNearEqual(a, b, double.Epsilon)
+				   || (stringValidate && !double.IsNaN(a) && !double.IsNaN(b) && a.ToString(CultureInfo.InvariantCulture) == b.ToString(CultureInfo.InvariantCulture));
 		}
 
 
@@ -127,7 +128,7 @@ namespace Open.Numeric.Precision
 		/// </summary>
 		public static bool IsPreciseEqual(this float a, float b, bool stringValidate = false)
 		{
-			return IsNearEqual(a, b, float.Epsilon) || (stringValidate && !float.IsNaN(a) && !float.IsNaN(b) && a.ToString() == b.ToString());
+			return IsNearEqual(a, b, float.Epsilon) || (stringValidate && !float.IsNaN(a) && !float.IsNaN(b) && a.ToString(CultureInfo.InvariantCulture) == b.ToString(CultureInfo.InvariantCulture));
 		}
 
 		/// <summary>
@@ -151,7 +152,7 @@ namespace Open.Numeric.Precision
 		/// <summary>
 		/// Shortcut for validating a if a potential floating pointvalue is close enough to another addValue using the given tolerance tolerance.
 		/// </summary>
-		public static bool IsNearEqual(this IComparable a, IComparable b, double tolerance)
+		public static bool IsNearEqual(this IComparable a, IComparable b, IComparable tolerance)
 		{
 			if (a == null)
 				throw new NullReferenceException();
@@ -159,12 +160,18 @@ namespace Open.Numeric.Precision
 				throw new ArgumentNullException(nameof(b));
 			Contract.EndContractBlock();
 
-			if (a is float)
-				return ((float)a).IsNearEqual((float)b, tolerance);
-			if (a is double)
-				return ((double)a).IsNearEqual((double)b, tolerance);
-			if (a is decimal)
-				return ((decimal)a).IsNearEqual((decimal)b, tolerance);
+			if (a.Equals(b))
+				return true;
+
+			switch (a)
+			{
+				case float f:
+					return IsNearEqual(f, (float)b, (float)tolerance);
+				case double d:
+					return IsNearEqual(d, (double)b, (double)tolerance);
+				case decimal @decimal:
+					return IsNearEqual(@decimal, (decimal)b, (decimal)tolerance);
+			}
 
 			throw new InvalidCastException();
 		}
@@ -199,21 +206,20 @@ namespace Open.Numeric.Precision
 		/// </summary>
 		public static double ToDouble(this float? value)
 		{
-			return value.HasValue ? value.Value.ToDouble() : double.NaN;
+			return value?.ToDouble() ?? double.NaN;
 		}
 
 
 		/// <summary>
 		/// Accurate way to convert a possible float to double by rounding finite values to a decimal point tolerance level.
 		/// </summary>
-		/// <param name="tolerance"></param>	
 		public static double ToDouble(this float? value, int precision)
 		{
 			if (precision < 0 || precision > 15)
 				throw new ArgumentOutOfRangeException(nameof(precision), precision, "Must be bewteen 0 and 15.");
 			Contract.EndContractBlock();
 
-			return value.HasValue ? value.Value.ToDouble(precision) : double.NaN;
+			return value?.ToDouble(precision) ?? double.NaN;
 		}
 
 

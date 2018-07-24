@@ -1,6 +1,7 @@
 ﻿
 using Open.Numeric.Precision;
 using System;
+using System.Globalization;
 
 namespace Open.Numeric
 {
@@ -26,7 +27,7 @@ namespace Open.Numeric
 		{
 			var a = Average;
 			var b = other.Average;
-			if (a.IsNearEqual(b, 0.00000001) && a.ToString() == b.ToString()) return 0; // We hate precision issues. :(  1==1 dammit!
+			if (a.IsNearEqual(b, 0.00000001) && a.ToString(CultureInfo.InvariantCulture) == b.ToString(CultureInfo.InvariantCulture)) return 0; // We hate precision issues. :(  1==1 dammit!
 			if (a < b || double.IsNaN(a) && !double.IsNaN(b)) return -1;
 			if (a > b || !double.IsNaN(a) && double.IsNaN(b)) return +1;
 			if (Count < other.Count) return -1;

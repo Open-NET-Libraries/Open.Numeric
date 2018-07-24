@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Open.Numeric
@@ -12,14 +13,9 @@ namespace Open.Numeric
 	public static class RandomUtilities
 	{
 		static readonly Lazy<Random> R = new Lazy<Random>(() => new Random());
-		public static Random Random
-		{
-			get
-			{
-				return R.Value;
-			}
-		}
+		public static Random Random => R.Value;
 
+		[SuppressMessage("ReSharper", "PossibleNullReferenceException")]
 		public static bool TryRandomPluck<T>(this LinkedList<T> source, out T value)
 		{
 			if (source.Count == 0)

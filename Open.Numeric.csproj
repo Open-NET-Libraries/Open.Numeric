@@ -16,10 +16,10 @@ Part of the "Open" set of libraries.</Description>
     <PackageProjectUrl>https://github.com/electricessence/Open.Numeric/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
-    <Version>1.2.0</Version>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.2.0.0</FileVersion>
-    <PackageReleaseNotes>Added ProcedureResults class which can contain multiple values summed.</PackageReleaseNotes>
+    <Version>1.2.1</Version>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
+    <FileVersion>1.2.1.0</FileVersion>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

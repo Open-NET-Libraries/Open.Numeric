@@ -8,7 +8,7 @@ namespace Open.Numeric
 		public int Count { get; }
 		public ReadOnlyMemory<double> Sum { get; }
 		public ReadOnlyMemory<double> Average { get; }
-		public ProcedureResults(ReadOnlySpan<double> sum, int count)
+		public ProcedureResults(in ReadOnlySpan<double> sum, int count)
 		{
 			Count = count;
 			var s = sum.ToArray();
@@ -16,7 +16,7 @@ namespace Open.Numeric
 			Average = s.Select(v => count == 0 ? double.NaN : v / count).ToArray();
 		}
 
-		static double[] SumValues(ReadOnlySpan<double> a, ReadOnlySpan<double> b)
+		static double[] SumValues(in ReadOnlySpan<double> a, in ReadOnlySpan<double> b)
 		{
 			if (a.Length != b.Length)
 				throw new ArgumentException("Length mismatch.");
@@ -29,8 +29,8 @@ namespace Open.Numeric
 			return result;
 		}
 
-		public ProcedureResults Add(ReadOnlySpan<double> values, int count = 1)
-			=> new ProcedureResults(SumValues(Sum.Span, values), Count + count);
+		public ProcedureResults Add(in ReadOnlySpan<double> values, int count = 1)
+			=> new ProcedureResults(SumValues(Sum.Span, in values), Count + count);
 
 		public static ProcedureResults operator +(ProcedureResults a, ProcedureResults b)
 			=> new ProcedureResults(SumValues(a.Sum.Span, b.Sum.Span), a.Count + b.Count);

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <Authors>electricessence</Authors>
     <Company />
     <Product />
@@ -10,16 +10,17 @@ Includes precision extensions for floating point numbers.
 
 Part of the "Open" set of libraries.</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageLicenseUrl>https://github.com/electricessence/Open.Numeric/blob/master/LISCENSE.md</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <Copyright>https://github.com/electricessence/Open.Numeric/blob/master/LISCENSE.md</Copyright>
     <RepositoryUrl>https://github.com/electricessence/Open.Numeric/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/electricessence/Open.Numeric/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
-    <Version>1.2.1</Version>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <FileVersion>1.2.1.0</FileVersion>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <Version>2.0.1</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <FileVersion>2.0.1.0</FileVersion>
+    <PackageReleaseNotes>Added .NEt Standard 2.1 support.</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -31,15 +32,15 @@ Part of the "Open" set of libraries.</Description>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+    <PackageReference Include="System.Memory" Version="4.5.3" />
+  </ItemGroup>
+
   <ItemGroup>
     <None Remove=".git" />
     <None Remove=".gitignore" />
     <None Remove="LISCENSE.md" />
     <None Remove="README.md" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.1" />
   </ItemGroup>
 
 </Project>

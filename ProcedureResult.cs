@@ -1,5 +1,4 @@
-﻿
-using Open.Numeric.Precision;
+﻿using Open.Numeric.Precision;
 using System;
 using System.Globalization;
 

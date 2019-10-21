@@ -19,7 +19,7 @@ Part of the "Open" set of libraries.</Description>
     <Version>2.0.1</Version>
     <AssemblyVersion>2.0.1.0</AssemblyVersion>
     <FileVersion>2.0.1.0</FileVersion>
-    <PackageReleaseNotes>Added .NEt Standard 2.1 support.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added .NET Standard 2.1 support.</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 

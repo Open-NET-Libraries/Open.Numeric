@@ -163,17 +163,13 @@ namespace Open.Numeric.Precision
 			if (a.Equals(b))
 				return true;
 
-			switch (a)
+			return a switch
 			{
-				case float f:
-					return IsNearEqual(f, (float)b, (float)tolerance);
-				case double d:
-					return IsNearEqual(d, (double)b, (double)tolerance);
-				case decimal @decimal:
-					return IsNearEqual(@decimal, (decimal)b, (decimal)tolerance);
-			}
-
-			throw new InvalidCastException();
+				float f => IsNearEqual(f, (float)b, (float)tolerance),
+				double d => IsNearEqual(d, (double)b, (double)tolerance),
+				decimal @decimal => IsNearEqual(@decimal, (decimal)b, (decimal)tolerance),
+				_ => throw new InvalidCastException(),
+			};
 		}
 
 

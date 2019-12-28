@@ -45,7 +45,7 @@ namespace Open.Numeric
 			var builder = ImmutableArray.CreateBuilder<T>(len);
 			for (var i = 0; i < len; i++)
 				builder[i] = source[i];
-			return builder.MoveToImmutable();
+			return builder.ToImmutable();
 		}
 
 		static ImmutableArray<double> SumValues(IReadOnlyList<double> a, IReadOnlyList<double> b)
@@ -58,7 +58,7 @@ namespace Open.Numeric
 			for (var i = 0; i < len; i++)
 				result[i] = a[i] + b[i];
 
-			return result.MoveToImmutable();
+			return result.ToImmutable();
 		}
 
 		static ImmutableArray<double> SumValues(IReadOnlyList<double> a, in ReadOnlySpan<double> b)
@@ -71,7 +71,7 @@ namespace Open.Numeric
 			for (var i = 0; i < len; i++)
 				result[i] = a[i] + b[i];
 
-			return result.MoveToImmutable();
+			return result.ToImmutable();
 		}
 
 		public ProcedureResults Add(IReadOnlyList<double> values, int count = 1)

@@ -18,7 +18,7 @@
 		<PackageProjectUrl>https://github.com/electricessence/Open.Numeric/</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>dotnet, dotnetcore, cs, numbers, double, float, precision, extensions</PackageTags>
-		<Version>2.2.0</Version>
+		<Version>2.2.1</Version>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Nullable>enable</Nullable>

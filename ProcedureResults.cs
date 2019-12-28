@@ -21,7 +21,7 @@ namespace Open.Numeric
 			Average = ImmutableArray<double>.Empty;
 		}
 
-		public ProcedureResults(ImmutableArray<double> sum, int count)
+		public ProcedureResults(in ImmutableArray<double> sum, int count)
 		{
 			Sum = sum;
 			Count = count;

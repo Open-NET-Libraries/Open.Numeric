@@ -44,8 +44,8 @@ namespace Open.Numeric
 			var len = source.Length;
 			var builder = ImmutableArray.CreateBuilder<T>(len);
 			for (var i = 0; i < len; i++)
-				builder[i] = source[i];
-			return builder.ToImmutable();
+				builder.Add(source[i]);
+			return builder.MoveToImmutable();
 		}
 
 		static ImmutableArray<double> SumValues(IReadOnlyList<double> a, IReadOnlyList<double> b)
@@ -54,11 +54,11 @@ namespace Open.Numeric
 			if (len != b.Count)
 				throw new ArgumentException("Length mismatch.");
 
-			var result = ImmutableArray.CreateBuilder<double>(len);
+			var builder = ImmutableArray.CreateBuilder<double>(len);
 			for (var i = 0; i < len; i++)
-				result[i] = a[i] + b[i];
+				builder.Add(a[i] + b[i]);
 
-			return result.ToImmutable();
+			return builder.MoveToImmutable();
 		}
 
 		static ImmutableArray<double> SumValues(IReadOnlyList<double> a, in ReadOnlySpan<double> b)
@@ -67,11 +67,11 @@ namespace Open.Numeric
 			if (len != b.Length)
 				throw new ArgumentException("Length mismatch.");
 
-			var result = ImmutableArray.CreateBuilder<double>(len);
+			var builder = ImmutableArray.CreateBuilder<double>(len);
 			for (var i = 0; i < len; i++)
-				result[i] = a[i] + b[i];
+				builder.Add(a[i] + b[i]);
 
-			return result.ToImmutable();
+			return builder.MoveToImmutable();
 		}
 
 		public ProcedureResults Add(IReadOnlyList<double> values, int count = 1)

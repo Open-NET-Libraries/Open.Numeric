@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Open.Numeric
 {
@@ -29,7 +29,7 @@ namespace Open.Numeric
 		}
 
 		public ProcedureResults(IEnumerable<double> sum, int count)
-			:this(sum is ImmutableArray<double> s ? s : sum.ToImmutableArray(), count)
+			: this(sum is ImmutableArray<double> s ? s : sum.ToImmutableArray(), count)
 		{
 		}
 

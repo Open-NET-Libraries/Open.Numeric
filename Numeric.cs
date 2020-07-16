@@ -1,11 +1,5 @@
-﻿/*!
- * @author electricessence / https://github.com/electricessence/
- * Licensing: MIT https://github.com/electricessence/Open/blob/dotnet-core/LICENSE.md
- */
-
-using Open.Numeric.Precision;
+﻿using Open.Numeric.Precision;
 using System;
-
 
 namespace Open.Numeric
 {
@@ -41,7 +35,7 @@ namespace Open.Numeric
 		/// </summary>
 		public static double ToDouble(object value)
 		{
-			if (value == null)
+			if (value is null)
 				return double.NaN;
 
 			return value is float f

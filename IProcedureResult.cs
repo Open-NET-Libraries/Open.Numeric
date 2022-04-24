@@ -1,13 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Open.Numeric
+namespace Open.Numeric;
+
+interface IProcedureResult<out T>
 {
-	// ReSharper disable once ArrangeTypeModifiers
-	[SuppressMessage("ReSharper", "UnusedMemberInSuper.Global")]
-	interface IProcedureResult<out T>
-	{
-		int Count { get; }
-		T Sum { get; }
-		T Average { get; }
-	}
+	int Count { get; }
+	T Sum { get; }
+	T Average { get; }
 }

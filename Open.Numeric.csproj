@@ -17,7 +17,7 @@
 		<RepositoryUrl>https://github.com/Open-NET-Libraries/Open.Numeric/</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Open-NET-Libraries/Open.Numeric/</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
-		<Version>2.3.1</Version>
+		<Version>2.4.0</Version>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>

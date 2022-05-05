@@ -1,34 +1,32 @@
 ﻿using System.Collections.Generic;
 
-namespace Open.Numeric
+namespace Open.Numeric;
+
+public static class UEnumerable
 {
-	public static class UEnumerable
+	public static IEnumerable<ushort> Range(ushort start, ushort count)
 	{
-		public static IEnumerable<ushort> Range(ushort start, ushort count)
+		while (count > 0)
 		{
-			while (count > 0)
-			{
-				yield return start;
-				start++;
-				count--;
-			}
+			yield return start;
+			start++;
+			count--;
 		}
-
-		public static IEnumerable<ushort> Range(ushort count)
-			=> Range(0, count);
-
-
-		public static IEnumerable<uint> Range(uint start, uint count)
-		{
-			while (count > 0)
-			{
-				yield return start;
-				start++;
-				count--;
-			}
-		}
-
-		public static IEnumerable<uint> Range(uint count)
-			=> Range(0, count);
 	}
+
+	public static IEnumerable<ushort> Range(ushort count)
+		=> Range(0, count);
+
+	public static IEnumerable<uint> Range(uint start, uint count)
+	{
+		while (count > 0)
+		{
+			yield return start;
+			start++;
+			count--;
+		}
+	}
+
+	public static IEnumerable<uint> Range(uint count)
+		=> Range(0, count);
 }

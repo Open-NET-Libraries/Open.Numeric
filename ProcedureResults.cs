@@ -11,8 +11,7 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 	public ImmutableArray<double> Sum { get; }
 	public ImmutableArray<double> Average { get; }
 
-	public static ProcedureResults Empty { get; }
-		= new ProcedureResults();
+	public static ProcedureResults Empty { get; } = new();
 
 	protected ProcedureResults()
 	{
@@ -21,7 +20,9 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		Average = ImmutableArray<double>.Empty;
 	}
 
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator", "RCS1242:Do not pass non-read-only struct by read-only reference.")]
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator",
+		"RCS1242:Do not pass non-read-only struct by read-only reference.",
+		Justification = "Option should be allowed since ImmutableArrays are not yet readonly structs.")]
 	public ProcedureResults(in ImmutableArray<double> sum, int count)
 	{
 		Sum = sum;
@@ -34,12 +35,12 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 	{
 	}
 
-	public ProcedureResults(in ReadOnlySpan<double> sum, int count)
-		: this(ToImmutableArray(in sum), count)
+	public ProcedureResults(ReadOnlySpan<double> sum, int count)
+		: this(ToImmutableArray(sum), count)
 	{
 	}
 
-	static ImmutableArray<T> ToImmutableArray<T>(in ReadOnlySpan<T> source)
+	static ImmutableArray<T> ToImmutableArray<T>(ReadOnlySpan<T> source)
 	{
 		var len = source.Length;
 		var builder = ImmutableArray.CreateBuilder<T>(len);
@@ -61,7 +62,7 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		return builder.MoveToImmutable();
 	}
 
-	static ImmutableArray<double> SumValues(IReadOnlyList<double> a, in ReadOnlySpan<double> b)
+	static ImmutableArray<double> SumValues(IReadOnlyList<double> a, ReadOnlySpan<double> b)
 	{
 		var len = a.Count;
 		if (len != b.Length)
@@ -77,8 +78,8 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 	public ProcedureResults Add(IReadOnlyList<double> values, int count = 1)
 		=> new(SumValues(Sum, values), Count + count);
 
-	public ProcedureResults Add(in ReadOnlySpan<double> values, int count = 1)
-		=> new(SumValues(Sum, in values), Count + count);
+	public ProcedureResults Add(ReadOnlySpan<double> values, int count = 1)
+		=> new(SumValues(Sum, values), Count + count);
 
 	public static ProcedureResults operator +(ProcedureResults a, ProcedureResults b)
 		=> new(SumValues(a.Sum, b.Sum), a.Count + b.Count);

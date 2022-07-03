@@ -55,7 +55,7 @@ public static class PrecisionExtensions
 	}
 
 	/// <summary>
-	/// Shortcut for validating a if a floating point value is close enough to another addValue using the given tolerance tolerance.
+	/// Shortcut for validating a if a floating point value is close enough to another addValue using the given tolerance.
 	/// </summary>
 	public static bool IsNearEqual(this float a, float b, float tolerance)
 		=> a.Equals(b)
@@ -63,7 +63,7 @@ public static class PrecisionExtensions
 		|| Math.Abs(a - b) < tolerance;
 
 	/// <summary>
-	/// Shortcut for validating a if a double precision floating point value is close enough to another addValue using the given tolerance tolerance.
+	/// Shortcut for validating a if a double precision floating point value is close enough to another addValue using the given tolerance.
 	/// </summary>
 	public static bool IsNearEqual(this double a, double b, double tolerance)
 		=> a.Equals(b)
@@ -71,14 +71,14 @@ public static class PrecisionExtensions
 		|| Math.Abs(a - b) < tolerance;
 
 	/// <summary>
-	/// Shortcut for validating a if a decimal addValue is close enough to another addValue using the given tolerance tolerance.
+	/// Shortcut for validating a if a decimal addValue is close enough to another addValue using the given tolerance.
 	/// </summary>
 	public static bool IsNearEqual(this decimal a, decimal b, decimal tolerance)
 		=> a.Equals(b)
 		|| Math.Abs(a - b) < tolerance;
 
 	/// <summary>
-	/// Shortcut for validating a if a decimal addValue is close enough to another addValue using the given tolerance tolerance.
+	/// Shortcut for validating a if a decimal addValue is close enough to another addValue using the given tolerance.
 	/// </summary>
 	public static bool IsRelativeNearEqual(this double a, double b, uint minDecimalPlaces)
 	{
@@ -123,7 +123,7 @@ public static class PrecisionExtensions
 		|| a.HasValue && b.HasValue && a.Value.IsPreciseEqual(b.Value, stringValidate);
 
 	/// <summary>
-	/// Shortcut for validating a if a potential floating pointvalue is close enough to another addValue using the given tolerance tolerance.
+	/// Shortcut for validating a if a potential floating pointvalue is close enough to another addValue using the given tolerance.
 	/// </summary>
 	public static bool IsNearEqual(this IComparable a, IComparable b, IComparable tolerance)
 	{

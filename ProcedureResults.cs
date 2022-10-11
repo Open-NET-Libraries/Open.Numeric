@@ -20,6 +20,14 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		Average = ImmutableArray<double>.Empty;
 	}
 
+#if NET6_0_OR_GREATER
+	public ProcedureResults(ImmutableArray<double> sum, int count)
+	{
+		Sum = sum;
+		Count = count;
+		Average = sum.Select(v => count == 0 ? double.NaN : v / count).ToImmutableArray();
+	}
+#else
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator",
 		"RCS1242:Do not pass non-read-only struct by read-only reference.",
 		Justification = "Option should be allowed since ImmutableArrays are not yet readonly structs.")]
@@ -29,6 +37,7 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		Count = count;
 		Average = sum.Select(v => count == 0 ? double.NaN : v / count).ToImmutableArray();
 	}
+#endif
 
 	public ProcedureResults(IEnumerable<double> sum, int count)
 		: this(sum is ImmutableArray<double> s ? s : sum.ToImmutableArray(), count)

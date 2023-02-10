@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Open.Numeric.Precision;
 
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider")]
 public static class PrecisionExtensions
 {
 	/// <summary>
@@ -41,16 +43,19 @@ public static class PrecisionExtensions
 		? double.PositiveInfinity
 		: float.IsNaN(value) ? double.NaN : 0D;
 
-	/// <summary>
-	/// Returns the number of decimal places before last zero digit.
-	/// </summary>
-	public static int DecimalPlaces(this double source)
+    /// <summary>
+    /// Returns the number of decimal places before last zero digit.
+    /// </summary>
+#pragma warning disable IDE0079 // Remove unnecessary suppression
+    [SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
+#pragma warning restore IDE0079 // Remove unnecessary suppression
+    public static int DecimalPlaces(this double source)
 	{
 		if (source.IsNaN())
 			return 0;
 
 		var valueString = source.ToString(CultureInfo.InvariantCulture); // To
-		var index = valueString.IndexOf('.');
+        int index = valueString.IndexOf('.');
 		return index == -1 ? 0 : valueString.Length - index - 1;
 	}
 
@@ -123,13 +128,13 @@ public static class PrecisionExtensions
 		|| a.HasValue && b.HasValue && a.Value.IsPreciseEqual(b.Value, stringValidate);
 
 	/// <summary>
-	/// Shortcut for validating a if a potential floating pointvalue is close enough to another addValue using the given tolerance.
+	/// Shortcut for validating a if a potential floating point value is close enough to another addValue using the given tolerance.
 	/// </summary>
 	public static bool IsNearEqual(this IComparable a, IComparable b, IComparable tolerance)
 	{
-		if (a is null)
-			throw new NullReferenceException();
-		if (b is null)
+        if (a is null)
+            throw new ArgumentNullException(nameof(a));
+        if (b is null)
 			throw new ArgumentNullException(nameof(b));
 		Contract.EndContractBlock();
 
@@ -148,7 +153,7 @@ public static class PrecisionExtensions
 	public static double ToDouble(this float value, int precision)
 	{
 		if (precision is < 0 or > 15)
-			throw new ArgumentOutOfRangeException(nameof(precision), precision, "Must be bewteen 0 and 15.");
+			throw new ArgumentOutOfRangeException(nameof(precision), precision, "Must be between 0 and 15.");
 		Contract.EndContractBlock();
 
 		var result = value.ReturnZeroIfFinite();
@@ -157,10 +162,10 @@ public static class PrecisionExtensions
 		// ReSharper restore RedundantCast
 	}
 
-	/// <summary>
-	/// Accurate way to convert float to double by converting to string first.  Avoids tolerance issues.
-	/// </summary>
-	public static double ToDouble(this float value)
+    /// <summary>
+    /// Accurate way to convert float to double by converting to string first.  Avoids tolerance issues.
+    /// </summary>
+    public static double ToDouble(this float value)
 	{
 		var result = value.ReturnZeroIfFinite();
 		return result.IsZero() ? double.Parse(value.ToString(CultureInfo.InvariantCulture)) : result;
@@ -178,7 +183,7 @@ public static class PrecisionExtensions
 	public static double ToDouble(this float? value, int precision)
 	{
 		if (precision is < 0 or > 15)
-			throw new ArgumentOutOfRangeException(nameof(precision), precision, "Must be bewteen 0 and 15.");
+			throw new ArgumentOutOfRangeException(nameof(precision), precision, "Must be between 0 and 15.");
 		Contract.EndContractBlock();
 
 		return value?.ToDouble(precision) ?? double.NaN;

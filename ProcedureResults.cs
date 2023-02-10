@@ -10,7 +10,6 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 	public int Count { get; }
 	public ImmutableArray<double> Sum { get; }
 	public ImmutableArray<double> Average { get; }
-
 	public static ProcedureResults Empty { get; } = new();
 
 	protected ProcedureResults()
@@ -85,11 +84,18 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 	}
 
 	public ProcedureResults Add(IReadOnlyList<double> values, int count = 1)
-		=> new(SumValues(Sum, values), Count + count);
+		=> new(SumValues(Sum, values ?? throw new ArgumentNullException(nameof(values))), Count + count);
 
 	public ProcedureResults Add(ReadOnlySpan<double> values, int count = 1)
 		=> new(SumValues(Sum, values), Count + count);
 
 	public static ProcedureResults operator +(ProcedureResults a, ProcedureResults b)
-		=> new(SumValues(a.Sum, b.Sum), a.Count + b.Count);
+    {
+        if (a is null)
+            throw new ArgumentNullException(nameof(a));
+        if (b is null)
+            throw new ArgumentNullException(nameof(b));
+
+        return new(SumValues(a.Sum, b.Sum), a.Count + b.Count);
+    }
 }

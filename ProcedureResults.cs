@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Open.Numeric;
@@ -27,9 +28,6 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		Average = sum.Select(v => count == 0 ? double.NaN : v / count).ToImmutableArray();
 	}
 #else
-	[System.Diagnostics.CodeAnalysis.SuppressMessage("Roslynator",
-		"RCS1242:Do not pass non-read-only struct by read-only reference.",
-		Justification = "Option should be allowed since ImmutableArrays are not yet readonly structs.")]
 	public ProcedureResults(in ImmutableArray<double> sum, int count)
 	{
 		Sum = sum;
@@ -48,7 +46,7 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 	{
 	}
 
-	static ImmutableArray<T> ToImmutableArray<T>(ReadOnlySpan<T> source)
+	private static ImmutableArray<T> ToImmutableArray<T>(ReadOnlySpan<T> source)
 	{
 		var len = source.Length;
 		var builder = ImmutableArray.CreateBuilder<T>(len);
@@ -57,7 +55,7 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		return builder.MoveToImmutable();
 	}
 
-	static ImmutableArray<double> SumValues(IReadOnlyList<double> a, IReadOnlyList<double> b)
+	private static ImmutableArray<double> SumValues(IReadOnlyList<double> a, IReadOnlyList<double> b)
 	{
 		var len = a.Count;
 		if (len != b.Count)
@@ -70,7 +68,7 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		return builder.MoveToImmutable();
 	}
 
-	static ImmutableArray<double> SumValues(IReadOnlyList<double> a, ReadOnlySpan<double> b)
+	private static ImmutableArray<double> SumValues(IReadOnlyList<double> a, ReadOnlySpan<double> b)
 	{
 		var len = a.Count;
 		if (len != b.Length)
@@ -90,12 +88,13 @@ public class ProcedureResults : IProcedureResult<ImmutableArray<double>>
 		=> new(SumValues(Sum, values), Count + count);
 
 	public static ProcedureResults operator +(ProcedureResults a, ProcedureResults b)
-    {
-        if (a is null)
-            throw new ArgumentNullException(nameof(a));
-        if (b is null)
-            throw new ArgumentNullException(nameof(b));
+	{
+		if (a is null)
+			throw new ArgumentNullException(nameof(a));
+		if (b is null)
+			throw new ArgumentNullException(nameof(b));
+		Contract.EndContractBlock();
 
-        return new(SumValues(a.Sum, b.Sum), a.Count + b.Count);
-    }
+		return new(SumValues(a.Sum, b.Sum), a.Count + b.Count);
+	}
 }

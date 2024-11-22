@@ -1,5 +1,4 @@
-﻿using Open.Numeric.Precision;
-using System;
+﻿using System;
 using System.Globalization;
 
 namespace Open.Numeric;
@@ -28,6 +27,6 @@ public static class NumericConvert
 		=> value is null
 			? double.NaN
 			: value is float f
-			? f.ToDouble()
+			? f.ToDouble(provider)
 			: Convert.ToDouble(value, provider ?? CultureInfo.InvariantCulture);
 }

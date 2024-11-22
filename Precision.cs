@@ -3,16 +3,18 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Open.Numeric.Precision;
+namespace Open.Numeric;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider")]
 public static class PrecisionExtensions
 {
 	/// <summary>
 	/// Accurate way to convert float to decimal by converting to string first.  Avoids tolerance issues.
 	/// </summary>
-	public static decimal ToDecimal(this float value)
-		=> decimal.Parse(value.ToString(CultureInfo.InvariantCulture));
+	public static decimal ToDecimal(this float value, IFormatProvider? formatProvider = null)
+	{
+		formatProvider ??= CultureInfo.InvariantCulture;
+		return decimal.Parse(value.ToString(formatProvider), formatProvider);
+	}
 
 	/// <summary>
 	/// Shortcut for validating a if a floating point value is considered zero (within epsilon tolerance).
@@ -36,26 +38,26 @@ public static class PrecisionExtensions
 	public static double FixZero(this double value)
 		=> !value.Equals(0) && value.IsZero() ? 0 : value;
 
-	static double ReturnZeroIfFinite(this float value)
+	private static double ReturnZeroIfFinite(this float value)
 		=> float.IsNegativeInfinity(value)
 		? double.NegativeInfinity
 		: float.IsPositiveInfinity(value)
 		? double.PositiveInfinity
 		: float.IsNaN(value) ? double.NaN : 0D;
 
-    /// <summary>
-    /// Returns the number of decimal places before last zero digit.
-    /// </summary>
+	/// <summary>
+	/// Returns the number of decimal places before last zero digit.
+	/// </summary>
 #pragma warning disable IDE0079 // Remove unnecessary suppression
-    [SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
+	[SuppressMessage("Globalization", "CA1307:Specify StringComparison for clarity")]
 #pragma warning restore IDE0079 // Remove unnecessary suppression
-    public static int DecimalPlaces(this double source)
+	public static int DecimalPlaces(this double source)
 	{
 		if (source.IsNaN())
 			return 0;
 
 		var valueString = source.ToString(CultureInfo.InvariantCulture); // To
-        int index = valueString.IndexOf('.');
+		int index = valueString.IndexOf('.');
 		return index == -1 ? 0 : valueString.Length - index - 1;
 	}
 
@@ -132,9 +134,9 @@ public static class PrecisionExtensions
 	/// </summary>
 	public static bool IsNearEqual(this IComparable a, IComparable b, IComparable tolerance)
 	{
-        if (a is null)
-            throw new ArgumentNullException(nameof(a));
-        if (b is null)
+		if (a is null)
+			throw new ArgumentNullException(nameof(a));
+		if (b is null)
 			throw new ArgumentNullException(nameof(b));
 		Contract.EndContractBlock();
 
@@ -162,20 +164,21 @@ public static class PrecisionExtensions
 		// ReSharper restore RedundantCast
 	}
 
-    /// <summary>
-    /// Accurate way to convert float to double by converting to string first.  Avoids tolerance issues.
-    /// </summary>
-    public static double ToDouble(this float value)
+	/// <summary>
+	/// Accurate way to convert float to double by converting to string first.  Avoids tolerance issues.
+	/// </summary>
+	public static double ToDouble(this float value, IFormatProvider? formatProvider = null)
 	{
+		formatProvider ??= CultureInfo.InvariantCulture;
 		var result = value.ReturnZeroIfFinite();
-		return result.IsZero() ? double.Parse(value.ToString(CultureInfo.InvariantCulture)) : result;
+		return result.IsZero() ? double.Parse(value.ToString(formatProvider), formatProvider) : result;
 	}
 
 	/// <summary>
 	/// Accurate way to convert possible float to double by converting to string first.  Avoids tolerance issues.
 	/// </summary>
-	public static double ToDouble(this float? value)
-		=> value?.ToDouble() ?? double.NaN;
+	public static double ToDouble(this float? value, IFormatProvider? formatProvider = null)
+		=> value?.ToDouble(formatProvider) ?? double.NaN;
 
 	/// <summary>
 	/// Accurate way to convert a possible float to double by rounding finite values to a decimal point tolerance level.

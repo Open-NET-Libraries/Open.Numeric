@@ -5,18 +5,30 @@ dotnet_diagnostic.RCS1123.severity = silent
 csharp_indent_labels = one_less_than_current
 csharp_using_directive_placement = outside_namespace:warning
 csharp_prefer_simple_using_statement = true:suggestion
-csharp_prefer_braces = true:silent
+csharp_prefer_braces = true:none
 csharp_style_namespace_declarations = file_scoped:suggestion
 csharp_style_prefer_method_group_conversion = true:silent
 csharp_style_prefer_top_level_statements = true:silent
-csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_methods = when_on_single_line:silent
 csharp_style_expression_bodied_constructors = false:silent
-csharp_style_expression_bodied_operators = false:silent
+csharp_style_expression_bodied_operators = false:none
 csharp_style_expression_bodied_properties = true:silent
 csharp_style_expression_bodied_indexers = true:silent
 csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:suggestion
 csharp_style_expression_bodied_local_functions = true:suggestion
+
+# IDE0011: Add braces
+dotnet_diagnostic.IDE0011.severity = none
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = none
+
+# IDE0024: Use block body for operator
+dotnet_diagnostic.IDE0024.severity = none
+
+# CA1510: Use ArgumentNullException throw helper
+dotnet_diagnostic.CA1510.severity = silent
 
 [*.{cs,vb}]
 dotnet_style_operator_placement_when_wrapping = beginning_of_line

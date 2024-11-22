@@ -1,8 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace Open.Numeric;
 
-namespace Open.Numeric;
-
-interface IProcedureResult<out T>
+public interface IProcedureResult<out T>
 {
 	int Count { get; }
 	T Sum { get; }

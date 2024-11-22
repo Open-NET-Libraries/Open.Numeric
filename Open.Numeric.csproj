@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net9.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>electricessence</Authors>
 		<Description>
-			Extensions for simplifying working with numbers.
-			Includes precision extensions for floating point numbers.
+Extensions for simplifying working with numbers.
+Includes precision extensions for floating point numbers.
 
-			Part of the "Open" set of libraries.
+Part of the "Open" set of libraries.
 		</Description>
 		<PackageTags>numbers;double;float;precision;extensions</PackageTags>
 		<Copyright>© electricessence (Oren F.) All rights reserved.</Copyright>
 		<RepositoryUrl>https://github.com/Open-NET-Libraries/Open.Numeric/</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/Open-NET-Libraries/Open.Numeric/</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
-		<Version>2.4.2</Version>
+		<Version>3.0.0</Version>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -27,14 +27,20 @@
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<AnalysisLevel>latest</AnalysisLevel>
 		<AnalysisMode>All</AnalysisMode>
-  </PropertyGroup>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<NoWarn>IDE0301;</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
+	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-		<PackageReference Include="System.Memory" Version="4.5.4" />
+		<PackageReference Include="System.Memory" Version="4.5.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="System.Collections.Immutable" Version="9.*" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,10 +50,10 @@
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
+		<None Include="README.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
 	</ItemGroup>
 
 </Project>

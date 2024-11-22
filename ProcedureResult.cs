@@ -1,7 +1,8 @@
-﻿using Open.Numeric.Precision;
-using System;
+﻿using System;
 using System.Globalization;
+#if NET7_0_OR_GREATER
 using System.Numerics;
+#endif
 
 namespace Open.Numeric;
 
@@ -68,8 +69,8 @@ public readonly record struct ProcedureResult<T>
 		Average = count == 0 ? 0 : sum / (dynamic)count;
 	}
 
-	public ProcedureResult Add(T value, int count = 1)
-		=> new(Sum + (dynamic)value, Count + count);
+	public ProcedureResult<T> Add(T value, int count = 1)
+		=> new(Sum + value, Count + count);
 
 	[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0046:Convert to conditional expression")]
 	public int CompareTo(ProcedureResult<T> other)
@@ -89,13 +90,17 @@ public readonly record struct ProcedureResult<T>
 			a.Count + b.Count
 		);
 
-	public static bool operator >(ProcedureResult<T> a, ProcedureResult<T> b) => a.CompareTo(b) == 1;
+	public static bool operator >(ProcedureResult<T> a, ProcedureResult<T> b)
+		=> a.CompareTo(b) == 1;
 
-	public static bool operator <(ProcedureResult<T> a, ProcedureResult<T> b) => a.CompareTo(b) == -1;
+	public static bool operator <(ProcedureResult<T> a, ProcedureResult<T> b)
+		=> a.CompareTo(b) == -1;
 
-	public static bool operator >=(ProcedureResult<T> a, ProcedureResult<T> b) => a.CompareTo(b) >= 0;
+	public static bool operator >=(ProcedureResult<T> a, ProcedureResult<T> b)
+		=> a.CompareTo(b) >= 0;
 
-	public static bool operator <=(ProcedureResult<T> a, ProcedureResult<T> b) => a.CompareTo(b) <= 0;
+	public static bool operator <=(ProcedureResult<T> a, ProcedureResult<T> b)
+		=> a.CompareTo(b) <= 0;
 }
 
 #endif

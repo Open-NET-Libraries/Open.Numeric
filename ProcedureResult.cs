@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Open.Numeric.Precision;
+using System;
 using System.Globalization;
 #if NET7_0_OR_GREATER
 using System.Numerics;

@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Open.Numeric;
+namespace Open.Numeric.Precision;
 
 public static class PrecisionExtensions
 {
@@ -19,18 +19,18 @@ public static class PrecisionExtensions
 	/// <summary>
 	/// Shortcut for validating a if a floating point value is considered zero (within epsilon tolerance).
 	/// </summary>
-	public static bool IsZero(this float value) => IsPreciseEqual(value, 0f);
+	public static bool IsZero(this float value) => value.IsPreciseEqual(0f);
 
 	/// <summary>
 	/// Shortcut for validating a if a double tolerance floating point value is considered zero (within epsilon tolerance).
 	/// </summary>
-	public static bool IsZero(this double value) => IsPreciseEqual(value, 0d);
+	public static bool IsZero(this double value) => value.IsPreciseEqual(0d);
 
 	/// <summary>
 	/// Shortcut for validating a if a double tolerance floating point value is considered zero (within provided tolerance).
 	/// </summary>
 	public static bool IsNearZero(this double value, double precision = 0.001)
-		=> IsNearEqual(value, 0d, precision);
+		=> value.IsNearEqual(0d, precision);
 
 	/// <summary>
 	/// Shortcut for returning true zero if a double tolerance floating point value is considered zero (within epsilon tolerance).
@@ -103,7 +103,7 @@ public static class PrecisionExtensions
 	/// Validates if values are equal within epsilon tolerance.
 	/// </summary>
 	public static bool IsPreciseEqual(this double a, double b, bool stringValidate = false)
-		=> IsNearEqual(a, b, double.Epsilon)
+		=> a.IsNearEqual(b, double.Epsilon)
 		|| stringValidate && !double.IsNaN(a) && !double.IsNaN(b)
 			&& a.ToString(CultureInfo.InvariantCulture) == b.ToString(CultureInfo.InvariantCulture);
 
@@ -111,7 +111,7 @@ public static class PrecisionExtensions
 	/// Validates if values are equal within epsilon tolerance.
 	/// </summary>
 	public static bool IsPreciseEqual(this float a, float b, bool stringValidate = false)
-		=> IsNearEqual(a, b, float.Epsilon)
+		=> a.IsNearEqual(b, float.Epsilon)
 		|| stringValidate && !float.IsNaN(a) && !float.IsNaN(b)
 			&& a.ToString(CultureInfo.InvariantCulture) == b.ToString(CultureInfo.InvariantCulture);
 
@@ -142,9 +142,9 @@ public static class PrecisionExtensions
 
 		return a.Equals(b) || a switch
 		{
-			float f => IsNearEqual(f, (float)b, (float)tolerance),
-			double d => IsNearEqual(d, (double)b, (double)tolerance),
-			decimal @decimal => IsNearEqual(@decimal, (decimal)b, (decimal)tolerance),
+			float f => f.IsNearEqual((float)b, (float)tolerance),
+			double d => d.IsNearEqual((double)b, (double)tolerance),
+			decimal @decimal => @decimal.IsNearEqual((decimal)b, (decimal)tolerance),
 			_ => throw new InvalidCastException(),
 		};
 	}
